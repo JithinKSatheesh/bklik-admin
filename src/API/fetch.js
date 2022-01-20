@@ -38,6 +38,10 @@ export function getAllUsers (query) {
     return  axios.get(`${BASE_URL}admin/user/all?${query}`)
 }
 
+export function getUserById (id) {
+    return  axios.get(`${BASE_URL}admin/user/one/${id}`)
+}
+
 // ---------------------------------------
 //  USERS
 // ---------------------------------------
@@ -61,8 +65,8 @@ export function getAddress () {
     return  axios.get(`${BASE_URL}address/me`)
 }
 
-export function createAddress  (payload) {
-    return  axios.post(`${BASE_URL}address/me`, payload)
+export function createAddress  (id, payload) {
+    return  axios.post(`${BASE_URL}admin/address/${id}`, payload)
 }
 
 export function editAddress  (id, payload) {
@@ -70,7 +74,7 @@ export function editAddress  (id, payload) {
 }
 
 export function deleteAddress  (id) {
-  return  axios.delete(`${BASE_URL}address/me/${id}`)
+  return  axios.delete(`${BASE_URL}addresses/${id}`)
 }
 
 // ---------------------------------------
@@ -89,6 +93,14 @@ export function updateOrders (id, payload) {
   return  axios.put(`${BASE_URL}orders/${id}`, { data : payload})
 }
 
+export function cancelOrders (id) {
+  return  axios.get(`${BASE_URL}admin/orders/cancel/${id}`)
+}
+
+export function confirmOrderEmail (id) {
+  return  axios.get(`${BASE_URL}admin/orders/mail/confirm/${id}`)
+}
+
 // ---------------------------------------
 // delivery
 // ---------------------------------------
@@ -104,4 +116,8 @@ export function updateDelivery (id, payload) {
 
 export function getConfig () {
   return  axios.get(`${BASE_URL}config`)
+}
+
+export function editConfig () {
+  return  axios.put(`${BASE_URL}config`)
 }

@@ -9,7 +9,7 @@ import { TableLayout1 } from 'components/TableLayout1'
 
 // **components
 import Rendertablerow from './RenderTableRow'
-import Edit from './Edit'
+import Edit from '../Edit'
 
 // API
 import { getAllUsers } from 'API/fetch'

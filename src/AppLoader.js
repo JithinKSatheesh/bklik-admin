@@ -5,6 +5,7 @@ import ROUTES, { RenderRoutes } from "./routes";
 
 // **hooks
 import initUser from 'auth/initUser'
+import jwt from 'API/tokenServices'
 
 // // ** toast
 // import { ToastContainer } from 'react-toastify';
@@ -21,16 +22,17 @@ export default function Apploader(props) {
     const [isError, setError] = useState(false)
 
     const initiateUser = async() => {
-        // if (!jwt.allowAutoLoad) {
-        //     return
-        // }
         setLoading(true)
         try {
 
-            await fetchAndInitUser()
+            const res =  await fetchAndInitUser()
+            if (!res) {
+                jwt.clearTokens()
+            }
             history.push('/dashboard')
 
         } catch (ex) {
+            jwt.clearTokens()
             // toast something went wrong please reload
         }
         setLoading(false)
@@ -39,8 +41,6 @@ export default function Apploader(props) {
     useEffect(() => {
         
         initiateUser()
-        
-
     }, [])
     
     const PageLoad = () => {

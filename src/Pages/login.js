@@ -5,6 +5,7 @@ import RenderTextField from 'components/RenderTextField';
 import RenderPasswordField from 'components/RenderPasswordField';
 
 import { throwToast } from 'components/ThrowToast';
+import { SaveButton } from 'components/CommonIcons'
 
 import Button from '@mui/material/Button';
 
@@ -47,7 +48,7 @@ export default function Login(props) {
         <>
             <div className="mt-32"></div>
             <div className="container mx-auto ">
-                <Paper elevation={2} className='rounded-lg w-96 mx-auto p-4' >
+                <div elevation={2} className='rounded-xl w-96 mx-auto bg-wood p-4' >
                     <div className="font-bold">
                         BKLIK ADMIN
                     </div>
@@ -72,12 +73,13 @@ export default function Login(props) {
 
                     </div>
                     <div className="py-3">
-                        <Button
-                            disabled={loading}
-                            onClick={callLogin}
-                            variant="contained">Login</Button>
+                        <SaveButton
+                            loading={loading}
+                            callback={callLogin}
+                            label="Login"
+                            />
                     </div>
-                </Paper>
+                </div>
             </div>
 
         </>

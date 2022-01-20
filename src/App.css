@@ -3,6 +3,14 @@
 /* ------------------------------------------ */
 /* ------------------------------------------ */
 
+html,body {
+  background-color: #F5E5D3;
+  background-image: url('./assets/bg/bklik_texture\ 1.png');
+  background-blend-mode: multiply;
+  /* background-size: contain; */
+  background-repeat: repeat;
+}
+
 .lds-hourglass {
   display: inline-block;
   position: relative;

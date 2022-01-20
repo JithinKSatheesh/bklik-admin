@@ -5,9 +5,8 @@ import {CommonTabs} from 'components/CommonTabs'
 
 // import All from './All'
 import Active from './Active'
-import Expired from './Expired'
 import History from './History'
-import Waiting from './Waiting'
+
 
 
 // ** layout
@@ -18,48 +17,29 @@ export default function Users(props) {
     const _tabHead = [
         {
             id: 'active',
-            label : 'Active Orders',
+            label : 'Active Deliveries',
             // link : '/dashboard/users/active'
         },
         {
-            id: 'waiting',
-            label : 'UnConfirmed Orders',
-            // link : '/dashboard/users/all'
-        },
-        {
-            id: 'expired',
-            label : 'Expired Orders',
-            // link : '/dashboard/users/all'
-        },
-        {
             id: 'history',
-            label : 'Order History',
-            // link : '/dashboard/users/all'
+            label : 'Deliveries History',
+            // link : '/dashboard/users/active'
         },
+       
         
     ]
 
     const _tabContent = [
-        // {
-        //     id : 'all',
-        //     component : <All />
-        // },
+ 
         {
             id : 'active',
             component : <Active />
         },
         {
-            id : 'expired',
-            component : <Expired />
-        },
-        {
             id : 'history',
             component : <History />
         },
-        {
-            id : 'waiting',
-            component : <Waiting />
-        },
+       
        
     ]
     
@@ -69,7 +49,7 @@ export default function Users(props) {
         <>
         <div className='px-4'>
             <div className="font-bold text-lg flex items-center">
-               <Icon className='mr-2'> shopping_cart </Icon> Orders
+               <Icon className='mr-2'> local_shipping </Icon> Delivery
             </div>
         </div>
         <div className="py-4">

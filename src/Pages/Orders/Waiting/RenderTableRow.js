@@ -7,24 +7,32 @@ import Icon from '@mui/material/Icon';
 // import CancelIcon from '@mui/icons-material/Cancel';
 import CircularProgress from '@mui/material/CircularProgress';
 
-// import {  DeleteButton } from 'app/customComponents/CommonIcons';
+import {  SaveButton } from 'components/CommonIcons';
 // import Renderswitch from 'app/customComponents/RenderSwitch'
 
 export default function Rendertablerow(props) {
 
-    const { tableRow, clickEvent } = props;
+    const { tableRow, clickEvent, confirmOrder } = props;
     const [loading, setLoading] = useState(false);
 
     const handleClickEvent = async() => {
         clickEvent(tableRow)
     }
+
+    const handleConfirmClickEvent = async() => {
+        setLoading(true)
+        await confirmOrder(tableRow.id)
+        setLoading(false)
+    }
     // console.log(tableRow)
+
+
 
 
     return (
         <>
-            <TableRow onClick={handleClickEvent} hover sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                <TableCell   className="cursor-pointer w-2/5" align={'left'}>
+            <TableRow  hover sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                <TableCell  onClick={handleClickEvent}  className="cursor-pointer w-2/5" align={'left'}>
                 
                         <div className='text-xs '>
                             {tableRow?.user_details?.username}
@@ -35,27 +43,23 @@ export default function Rendertablerow(props) {
                         
                     
                 </TableCell>
-                <TableCell  className="cursor-pointer w-2/5" align={'left'}>
+                <TableCell onClick={handleClickEvent}  className="cursor-pointer w-2/5" align={'left'}>
                     <div className="text-xs">
                         {tableRow?.address?.address}
                     </div>
                 </TableCell>
-                <TableCell  className="cursor-pointer w-2/5" align={'left'}>
+                <TableCell onClick={handleClickEvent}  className="cursor-pointer w-2/5" align={'left'}>
                     <div className="text-xs">
                         {tableRow?.weeks} weeks x  {tableRow?.people} people
                     </div>
                 </TableCell>
-                <TableCell align="right" >
+                <TableCell onClick={handleClickEvent} align="right" >
                     <div className="text-xs font-bold cursor-pointer">
                         {tableRow?.total_price}
                     </div>
                 </TableCell>
-                <TableCell align="left" >
-                    <div className="text-xs font-bold w-24 cursor-pointer">
-                        {(`${tableRow?.expiry_date}`).substring(0, 10)}
-                    </div>
-                </TableCell>
-                <TableCell align="left" >
+             
+                <TableCell onClick={handleClickEvent} align="left" >
                     <div className="text-xs  w-24 cursor-pointer flex items-center">
                         <span className='mr-3'> {tableRow?.payment_mode}</span>
                         {tableRow?.is_payment_confirmed ? 
@@ -67,12 +71,7 @@ export default function Rendertablerow(props) {
                 </TableCell>
                 <TableCell align="left" >
                     <div className="text-xs font-bold w-24">
-                        {tableRow.is_canceled ?
-                            <div className="text-red-800"> Cancelled</div>
-                            :
-                            <div className="text-green-800"> Ok</div>
-                        }
-                        
+                       <SaveButton loading={loading} callback={handleConfirmClickEvent} label="Confirm" />
                     </div>
                 </TableCell>
 

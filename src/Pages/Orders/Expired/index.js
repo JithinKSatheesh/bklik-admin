@@ -10,7 +10,7 @@ import { TableLayout1 } from 'components/TableLayout1'
 
 // **components
 import Rendertablerow from './RenderTableRow'
-import Edit from '../Edit'
+import Edit from '../../Edit'
 
 // API
 import { getOrders } from 'API/fetch'
@@ -145,7 +145,10 @@ export default function Expired(props) {
                 
             }
             <div className="p-4">
-                <Alert severity="warning">Expired order means - The orders that's last delivery date is already passed!</Alert>
+                <Alert severity="error">
+                        Expired order means the orders that's last delivery date is already passed!
+                        <br /> <br/> Apply "Relavent" filter - to get only last order of a user
+                </Alert>
                 <div className="p-4 flex justify-end">
                     <Renderselect
                         name="filter" 

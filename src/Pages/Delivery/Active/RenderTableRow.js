@@ -52,7 +52,7 @@ export default function Rendertablerow(props) {
                 </TableCell>
                 <TableCell align="left" >
                     <div className="text-xs font-bold w-24 cursor-pointer">
-                        {(`${tableRow?.expiry_date}`).substring(0, 10)}
+                        {(`${tableRow?.updatedAt}`).substring(0, 10)}
                     </div>
                 </TableCell>
                 <TableCell align="left" >
@@ -67,10 +67,10 @@ export default function Rendertablerow(props) {
                 </TableCell>
                 <TableCell align="left" >
                     <div className="text-xs font-bold w-24">
-                        {tableRow.is_canceled ?
-                            <div className="text-red-800"> Cancelled</div>
+                        {tableRow.is_delivery_confirmed ?
+                            <div className="text-green-800"> Confirmed</div>
                             :
-                            <div className="text-green-800"> Ok</div>
+                            <div className="text-red-800"> Not confirmed</div>
                         }
                         
                     </div>

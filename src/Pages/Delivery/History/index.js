@@ -1,7 +1,10 @@
 import React, {useEffect, useState} from 'react'
-import Paper from '@mui/material/Paper'
+
 import Alert from '@mui/material/Alert';
 import * as qs from 'qs'
+import DateRangePicker from '@mui/lab/DateRangePicker';
+import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
 
 // **mUi
 import Renderselect from 'components/RenderSelect'
@@ -15,7 +18,7 @@ import Edit from '../../Edit'
 // API
 import { getOrders } from 'API/fetch'
 
-export default function Expired(props) {
+export default function Active(props) {
 
 
     const _tableHeadValues = [
@@ -59,10 +62,11 @@ export default function Expired(props) {
 
     const [tableData, setTableData] = useState([])
     const [loading, setLoading] = useState(false)
+    const [dateRange, setDateRange] = useState([null, null]);
 
     const [modalOpen_edit, setModalOpen_edit] = useState(false)
     const [editVal, setEditVal] = useState({})
-    const [filter, setFilter] = useState('all')
+    const [filter, setFilter] = useState('confirmed')
 
     const showEditPopup = (id) => {
         setModalOpen_edit(true)
@@ -75,39 +79,22 @@ export default function Expired(props) {
     }
 
     const filterMap = {
-        all : {
-            // filters: { 
-            //     $and : [
-            //         { expiry_date : {$lt : new Date(new Date().setHours(0,0,0,0)) }} ,
-            //         // { user : { email :  {$notNull : true} }},
-            //     ]
-            // },
-            populate: ['user_details', 'address', 'deliveries']
-        },
         confirmed : {
             filters: { 
                 $and : [
-                    { expiry_date : {$lt : new Date(new Date().setHours(0,0,0,0)) }} ,
+                    { 
+                        deliveries :  { delivery_date : {$gte : new Date(dateRange[0])} }
+                    } ,
+                    { 
+                        deliveries :  { delivery_date : {$lte : new Date(dateRange[1])} }
+                    } ,
+                    // { expiry_date : {$gte : new Date(new Date().setHours(0,0,0,0)) }} ,
                     // { user : { email :  {$notNull : true} }},
-                    { is_delivery_confirmed : {$eq : true } },
+                    // { is_delivery_confirmed : {$eq : true } },
                 ]
             },
             populate: ['user_details', 'address', 'deliveries']
         },
-        unconfirmed : {
-            filters: { 
-                $and : [
-                    { expiry_date : {$lt : new Date(new Date().setHours(0,0,0,0)) }} ,
-                    // { user : { email :  {$notNull : true} }},
-                    { is_delivery_confirmed : {$eq : false } },
-                ]
-            },
-            populate: ['user_details', 'address',  'deliveries']
-        },
-        // all : {
-        //     // filters: { order : { delivery_time : {$notNull : true} }},
-        //     populate: ['user_details', 'address']
-        // },
     }
 
     const query = qs.stringify(
@@ -131,7 +118,7 @@ export default function Expired(props) {
 
     useEffect(() => {
         fetchOrdersData()
-    }, [filter])
+    }, [dateRange])
 
 
     return (
@@ -145,17 +132,30 @@ export default function Expired(props) {
                 
             }
             <div className="p-4">
-                <Alert severity="warning">Just listing all orders in past</Alert>
+                <Alert severity="warning"> just listing All deliveries</Alert>
                 <div className="p-4 flex justify-end">
-                    <Renderselect
+                    {/* <Renderselect
                         name="filter" 
-                        options={[ 
-                            {label : 'All', value : 'all'},
-                            // {label : 'Confirmed', value : 'confirmed'}, {label : 'Non confirmed', value : 'unconfirmed'}
-                        ]}  
+                        options={[ {label : 'All', value : 'all'},{label : 'Confirmed', value : 'confirmed'}, {label : 'Non confirmed', value : 'unconfirmed'}]}  
                         handleChange={(e) => setFilter(e.target.value)}
                         value={filter}
-                        />
+                        /> */}
+                    <DateRangePicker
+                        className="w-full"
+                        startText="Date From"
+                        endText="Date to"
+                        calendars={1}
+                        value={dateRange}
+                        onChange={newVal => setDateRange(newVal)}
+                        renderInput={(startProps, endProps) => (
+                            <React.Fragment>
+                              <TextField {...startProps} />
+                              <Box sx={{ mx: 2 }}> to </Box>
+                              <TextField {...endProps} />
+                            </React.Fragment>
+                          )}
+
+                    />
                 </div>
                 <div className='shadow-lg bg-wood rounded-xl p-2'>
 

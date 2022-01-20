@@ -8,14 +8,19 @@ import Renderselect from 'components/RenderSelect'
 
 import { TableLayout1 } from 'components/TableLayout1'
 
+// ** hooks
+import putDataHooks from 'hooks/putDataHooks'
+
 // **components
 import Rendertablerow from './RenderTableRow'
 import Edit from '../../Edit'
 
 // API
-import { getOrders } from 'API/fetch'
+import { getOrders, confirmOrderEmail } from 'API/fetch'
 
-export default function Expired(props) {
+export default function Active(props) {
+
+    const { updateOrderData } = putDataHooks()
 
 
     const _tableHeadValues = [
@@ -40,29 +45,26 @@ export default function Expired(props) {
             align: 'right'
         },
         {
-            id: 6,
-            value: 'Expiry date',
-            align: 'left',
-        },
-        {
             id: 7,
             value: 'Payment',
             align: 'left',
         },
         {
             id: 8,
-            value: 'Status',
-            align: 'left',
+            value: 'Action',
+            align: 'right',
         }
 
     ]
+
+
 
     const [tableData, setTableData] = useState([])
     const [loading, setLoading] = useState(false)
 
     const [modalOpen_edit, setModalOpen_edit] = useState(false)
     const [editVal, setEditVal] = useState({})
-    const [filter, setFilter] = useState('all')
+    const [filter, setFilter] = useState('unconfirmed')
 
     const showEditPopup = (id) => {
         setModalOpen_edit(true)
@@ -75,30 +77,12 @@ export default function Expired(props) {
     }
 
     const filterMap = {
-        all : {
-            // filters: { 
-            //     $and : [
-            //         { expiry_date : {$lt : new Date(new Date().setHours(0,0,0,0)) }} ,
-            //         // { user : { email :  {$notNull : true} }},
-            //     ]
-            // },
-            populate: ['user_details', 'address', 'deliveries']
-        },
-        confirmed : {
-            filters: { 
-                $and : [
-                    { expiry_date : {$lt : new Date(new Date().setHours(0,0,0,0)) }} ,
-                    // { user : { email :  {$notNull : true} }},
-                    { is_delivery_confirmed : {$eq : true } },
-                ]
-            },
-            populate: ['user_details', 'address', 'deliveries']
-        },
+       
         unconfirmed : {
             filters: { 
                 $and : [
-                    { expiry_date : {$lt : new Date(new Date().setHours(0,0,0,0)) }} ,
-                    // { user : { email :  {$notNull : true} }},
+                    { expiry_date : {$gte : new Date(new Date().setHours(0,0,0,0)) }} ,
+                    { user : { email :  {$notNull : true} }},
                     { is_delivery_confirmed : {$eq : false } },
                 ]
             },
@@ -129,6 +113,26 @@ export default function Expired(props) {
         setLoading(false)
     }
 
+    const confirmOrder = async (id) => {
+        setLoading(true)
+        try {
+
+            const _payload = { is_delivery_confirmed : true }
+            const res = await updateOrderData(id, _payload)
+            await confirmOrderEmail(id)
+            if (!res) {
+                
+            } else {
+                fetchOrdersData()
+                closeEditPopup()
+            }
+        } catch (ex) {
+
+            // console.log(res)
+            setLoading(false)
+        }
+    }
+
     useEffect(() => {
         fetchOrdersData()
     }, [filter])
@@ -145,14 +149,13 @@ export default function Expired(props) {
                 
             }
             <div className="p-4">
-                <Alert severity="warning">Just listing all orders in past</Alert>
+                <Alert severity="error"> 
+                    These orders are waiting for confirmation!...(clicking on confirm button will also sent an email to user 🙌 )
+                </Alert>
                 <div className="p-4 flex justify-end">
                     <Renderselect
                         name="filter" 
-                        options={[ 
-                            {label : 'All', value : 'all'},
-                            // {label : 'Confirmed', value : 'confirmed'}, {label : 'Non confirmed', value : 'unconfirmed'}
-                        ]}  
+                        options={[  {label : 'Non confirmed', value : 'unconfirmed'}]}  
                         handleChange={(e) => setFilter(e.target.value)}
                         value={filter}
                         />
@@ -167,6 +170,7 @@ export default function Expired(props) {
                                 key={row.id}
                                 tableRow={row}
                                 clickEvent={showEditPopup}
+                                confirmOrder={confirmOrder}
                             />
                         ))}
                     </TableLayout1>

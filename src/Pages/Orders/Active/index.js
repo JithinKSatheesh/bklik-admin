@@ -10,7 +10,7 @@ import { TableLayout1 } from 'components/TableLayout1'
 
 // **components
 import Rendertablerow from './RenderTableRow'
-import Edit from '../Edit'
+import Edit from '../../Edit'
 
 // API
 import { getOrders } from 'API/fetch'
@@ -62,7 +62,7 @@ export default function Active(props) {
 
     const [modalOpen_edit, setModalOpen_edit] = useState(false)
     const [editVal, setEditVal] = useState({})
-    const [filter, setFilter] = useState('confirmed')
+    const [filter, setFilter] = useState('all')
 
     const showEditPopup = (id) => {
         setModalOpen_edit(true)
@@ -145,7 +145,7 @@ export default function Active(props) {
                 
             }
             <div className="p-4">
-                <Alert severity="warning">Active order means - All orders that is not expired!</Alert>
+                <Alert severity="info">Active order means - All orders that is not expired!</Alert>
                 <div className="p-4 flex justify-end">
                     <Renderselect
                         name="filter" 

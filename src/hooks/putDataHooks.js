@@ -102,6 +102,7 @@ export default function Putdatahooks(props) {
             info, 
             total_price, 
             expiry_date, 
+            address,
             is_payment_confirmed, 
             is_delivery_confirmed 
         } = payload
@@ -113,6 +114,7 @@ export default function Putdatahooks(props) {
             info, 
             total_price, 
             expiry_date, 
+            address,
             is_payment_confirmed, 
             is_delivery_confirmed 
         })

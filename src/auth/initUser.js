@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import { useHistory } from 'react-router-dom'
 import jwt from 'API/tokenServices'
 import { userStore } from 'store/userStore'
 
@@ -11,6 +12,7 @@ import { logIn, signUp, getProfile, changePassword, updateProfile } from 'API/fe
 export default function Inituser() {
 
     const userStoreData = useContext(userStore)
+    const history = useHistory()
 
     const loginUser = async(payload, setError = () => {}) => {
         try {
@@ -72,17 +74,18 @@ export default function Inituser() {
         try {
 
             const res = await getProfile()
-            const userData = res.data.data
+            const userData = res?.data?.data
             if (!userData) {
-                return 
+                return  false
             }
             userStoreData.dispatch({
                 type: 'initUser',
                 payload: userData
             })
+            return true
 
         } catch (ex) {
-
+            return  false
         }
     }
 
@@ -103,43 +106,15 @@ export default function Inituser() {
         return {}
     }
 
-    // const changeUserPassword = async(payload) => {
-
-    //     try {
-
-    //         const res = await changePassword(payload)
-    //         if (res) {
-               
-    //             return res
-    //         }
-    //         return false
-
-    //     } catch (ex) {
-            
-    //         return false
-    //     }
-
-    // }
-
-    // const updateUserData = async(payload) => {
-
-    //     try {
-
-    //         const res = await updateProfile(payload)
-    //         if (res) {
-                
-    //             fetchAndInitUser()
-    //             return res
-    //         }
-    //         return false
-
-    //     } catch (ex) {
-            
-    //         return false
-    //     }
-
-    // }
+    const logOutUser = () => {
+        jwt.clearTokens()
+        userStoreData.dispatch({
+            type: 'logOut',
+            payload: {}
+        })
+        history.push('/login')
+    }
     
 
-    return { isUserLoggedIn, getUserData, loginUser, signUpUser, fetchAndInitUser}
+    return { isUserLoggedIn, getUserData, loginUser, signUpUser, fetchAndInitUser, logOutUser}
 }
