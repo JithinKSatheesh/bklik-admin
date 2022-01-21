@@ -45,6 +45,12 @@ export default function Index(props) {
             wrapperClass: ''
         },
         {
+            name: "delivery_time_details",
+            labelText: "Delivery time details",
+            type: 'text',
+            wrapperClass: ''
+        },
+        {
             name: "info",
             labelText: "Info",
             type: 'text',
@@ -205,6 +211,12 @@ export default function Index(props) {
                     <div className='font-bold'> Payment Details </div>
                     <div>
                         {val?.payment_mode}
+                    </div>
+                    <div>
+                        {console.log(val)}
+                        {val?.bring_nfc && <span className='text-red-500'>
+                            Customer requested NFC device
+                        </span>}
                     </div>
                 </div>
                 <div className="py-2">
