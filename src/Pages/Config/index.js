@@ -43,6 +43,7 @@ export default function Index(props) {
     ]
 
     const initialConfigVal = {
+        id : '',
         price : '',
         max_weeks : '',
         max_people : '',
@@ -63,7 +64,7 @@ export default function Index(props) {
         setLoading(true)
         try {
             const res = await getConfig()
-            const items = res?.data?.data?.attributes ?? {}
+            const items = res?.data?.data ?? {}
             setInputVal(prev => ({
                 ...prev,
                 ...items,
@@ -82,7 +83,7 @@ export default function Index(props) {
         setLoading(true)
         const _payload = {...inputVal, delivery_time_range : JSON.parse(inputVal.delivery_time_range)}
         try {
-            const res = await editConfig(_payload)
+            const res = await editConfig(inputVal.id, _payload)
             fetchConfigData()
             throwToast.success("Updated")
 

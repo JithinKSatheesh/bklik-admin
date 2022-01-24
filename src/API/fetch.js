@@ -64,11 +64,6 @@ export function changePassword  (payload) {
 export function getAddress () {
     return  axios.get(`${BASE_URL}address/me`)
 }
-
-export function createAddress  (id, payload) {
-    return  axios.post(`${BASE_URL}admin/address/${id}`, payload)
-}
-
 export function editAddress  (id, payload) {
   return  axios.put(`${BASE_URL}addresses/${id}`, { data : payload})
 }
@@ -77,13 +72,17 @@ export function deleteAddress  (id) {
   return  axios.delete(`${BASE_URL}addresses/${id}`)
 }
 
+// ** admin
+
+export function createAddress  (id, payload) {
+    return  axios.post(`${BASE_URL}admin/address/${id}`, payload)
+}
+
+
 // ---------------------------------------
 // Orders
 // ---------------------------------------
 
-export function getOrders (query) {
-  return  axios.get(`${BASE_URL}admin/orders/all?${query}`)
-}
 
 export function createOrders (payload) {
   return  axios.post(`${BASE_URL}orders`, payload)
@@ -91,6 +90,16 @@ export function createOrders (payload) {
 
 export function updateOrders (id, payload) {
   return  axios.put(`${BASE_URL}orders/${id}`, { data : payload})
+}
+
+export function getOrdersById (id, query) {
+  return  axios.get(`${BASE_URL}orders/${id}?${query}`)
+}
+
+// Order admin
+
+export function getOrders (query) {
+  return  axios.get(`${BASE_URL}admin/orders/all?${query}`)
 }
 
 export function cancelOrders (id) {
@@ -115,9 +124,9 @@ export function updateDelivery (id, payload) {
 // ---------------------------------------
 
 export function getConfig () {
-  return  axios.get(`${BASE_URL}config`)
+  return  axios.get(`${BASE_URL}config/get`)
 }
 
-export function editConfig () {
-  return  axios.put(`${BASE_URL}config`)
+export function editConfig (id, payload) {
+  return  axios.put(`${BASE_URL}config/put/${id}`, payload)
 }

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 
 import Alert from '@mui/material/Alert';
 import * as qs from 'qs'
@@ -14,6 +14,7 @@ import { TableLayout1 } from 'components/TableLayout1'
 // **components
 import Rendertablerow from './RenderTableRow'
 import Edit from '../../Edit'
+import { TableLoadingProgress } from 'components/LoadingProgress'
 
 // API
 import { getOrders } from 'API/fetch'
@@ -79,18 +80,18 @@ export default function Active(props) {
     }
 
     const filterMap = {
-        confirmed : {
-            filters: { 
-                $and : [
-                    { 
-                        deliveries :  { delivery_date : {$gte : new Date(dateRange[0])} }
-                    } ,
-                    { 
-                        deliveries :  { delivery_date : {$lte : new Date(dateRange[1])} }
-                    } ,
-                    { expiry_date : {$gte : new Date(new Date().setHours(0,0,0,0)) }} ,
-                    { user : { email :  {$notNull : true} }},
-                    { is_delivery_confirmed : {$eq : true } },
+        confirmed: {
+            filters: {
+                $and: [
+                    {
+                        deliveries: { delivery_date: { $gte: new Date(dateRange[0]) } }
+                    },
+                    {
+                        deliveries: { delivery_date: { $lte: new Date(dateRange[1]) } }
+                    },
+                    { expiry_date: { $gte: new Date(new Date().setHours(0, 0, 0, 0)) } },
+                    { user: { email: { $notNull: true } } },
+                    { is_delivery_confirmed: { $eq: true } },
                 ]
             },
             populate: ['user_details', 'address', 'deliveries']
@@ -98,7 +99,7 @@ export default function Active(props) {
     }
 
     const query = qs.stringify(
-        filterMap[filter], 
+        filterMap[filter],
         { encodeValuesOnly: true, }
     );
 
@@ -111,7 +112,7 @@ export default function Active(props) {
             setTableData(items)
 
         } catch (ex) {
-            
+
         }
         setLoading(false)
     }
@@ -123,19 +124,19 @@ export default function Active(props) {
 
     return (
         <>
-            {modalOpen_edit && 
+            {modalOpen_edit &&
                 <Edit
                     val={editVal}
                     onClose={closeEditPopup}
                     callback={fetchOrdersData}
-                /> 
-                
+                />
+
             }
             <div className="p-4">
                 <Alert severity="error">
-                        Active  means - All orders that is not expired!
-                        <br />
-                        {'Only confirmed orders will appear here! ( To view unconfirmed order visit > orders > Waiting )'}
+                    Active  means - All orders that is not expired!
+                    <br />
+                    {'Only confirmed orders will appear here! ( To view unconfirmed order visit > orders > Waiting )'}
                 </Alert>
                 <div className="p-4 flex justify-end">
                     {/* <Renderselect
@@ -153,27 +154,33 @@ export default function Active(props) {
                         onChange={newVal => setDateRange(newVal)}
                         renderInput={(startProps, endProps) => (
                             <React.Fragment>
-                              <TextField {...startProps} />
-                              <Box sx={{ mx: 2 }}> to </Box>
-                              <TextField {...endProps} />
+                                <TextField {...startProps} />
+                                <Box sx={{ mx: 2 }}> to </Box>
+                                <TextField {...endProps} />
                             </React.Fragment>
-                          )}
+                        )}
 
                     />
                 </div>
                 <div className='shadow-lg bg-wood rounded-xl p-2'>
+                    {loading ?
+                        <div className="w-3/12 mx-auto" >
+                            <TableLoadingProgress color="primary" text="Loading table ..." />
+                        </div>
 
-                    <TableLayout1
-                        tableHeadValues={_tableHeadValues}
-                    >
-                        {[...tableData].map((row) => (
-                            <Rendertablerow
-                                key={row.id}
-                                tableRow={row}
-                                clickEvent={showEditPopup}
-                            />
-                        ))}
-                    </TableLayout1>
+                        :
+                        <TableLayout1
+                            tableHeadValues={_tableHeadValues}
+                        >
+                            {[...tableData].map((row) => (
+                                <Rendertablerow
+                                    key={row.id}
+                                    tableRow={row}
+                                    clickEvent={showEditPopup}
+                                />
+                            ))}
+                        </TableLayout1>
+                    }
                 </div>
             </div>
 

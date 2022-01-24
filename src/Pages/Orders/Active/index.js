@@ -7,6 +7,7 @@ import * as qs from 'qs'
 import Renderselect from 'components/RenderSelect'
 
 import { TableLayout1 } from 'components/TableLayout1'
+import {TableLoadingProgress} from 'components/LoadingProgress'
 
 // **components
 import Rendertablerow from './RenderTableRow'
@@ -155,6 +156,11 @@ export default function Active(props) {
                         />
                 </div>
                 <div className='shadow-lg bg-wood rounded-xl p-2'>
+                    {loading ?
+                     <div className="w-3/12 mx-auto" >
+                     <TableLoadingProgress color="primary" text="Loading table ..." />
+                 </div>
+                 :
 
                     <TableLayout1
                         tableHeadValues={_tableHeadValues}
@@ -167,6 +173,8 @@ export default function Active(props) {
                             />
                         ))}
                     </TableLayout1>
+                }
+
                 </div>
             </div>
 

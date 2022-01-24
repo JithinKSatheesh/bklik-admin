@@ -41,15 +41,16 @@ export default function Sidebar(props) {
     return (
         <>
         {/* {console.log(location)} */}
-           {NavList.map(item =>  <div key={item.label}  
-            className={`px-2 py-4  my-2 cursor-pointer hover:bg-white ${location === item.link ? 'bg-orange text-white' : null} `}>
-            <Link to={item.link} className='flex items-center  '>
-               <span className="mr-2">
-                   <Icon> {item.icon} </Icon>
-               </span>
-               {item.label}
+           {NavList.map(item =>  
+            <Link key={item.label}  to={item.link} className={`flex items-center cursor-pointer hover:bg-white  ${location === item.link ? 'bg-orange text-white' : null} `}>
+            <div  className={`px-2 py-4  my-2 `} >
+                <span className="mr-2">
+                    <Icon> {item.icon} </Icon>
+                </span>
+                {item.label}
+            </div>
             </Link>
-           </div>)} 
+           )} 
         
         </>
     )

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import Paper from '@mui/material/Paper'
 import Alert from '@mui/material/Alert';
 import * as qs from 'qs'
@@ -7,6 +7,7 @@ import * as qs from 'qs'
 import Renderselect from 'components/RenderSelect'
 
 import { TableLayout1 } from 'components/TableLayout1'
+import { TableLoadingProgress } from 'components/LoadingProgress'
 
 // **components
 import Rendertablerow from './RenderTableRow'
@@ -75,7 +76,7 @@ export default function Expired(props) {
     }
 
     const filterMap = {
-        all : {
+        all: {
             // filters: { 
             //     $and : [
             //         { expiry_date : {$lt : new Date(new Date().setHours(0,0,0,0)) }} ,
@@ -84,25 +85,25 @@ export default function Expired(props) {
             // },
             populate: ['user_details', 'address', 'deliveries']
         },
-        confirmed : {
-            filters: { 
-                $and : [
-                    { expiry_date : {$lt : new Date(new Date().setHours(0,0,0,0)) }} ,
+        confirmed: {
+            filters: {
+                $and: [
+                    { expiry_date: { $lt: new Date(new Date().setHours(0, 0, 0, 0)) } },
                     // { user : { email :  {$notNull : true} }},
-                    { is_delivery_confirmed : {$eq : true } },
+                    { is_delivery_confirmed: { $eq: true } },
                 ]
             },
             populate: ['user_details', 'address', 'deliveries']
         },
-        unconfirmed : {
-            filters: { 
-                $and : [
-                    { expiry_date : {$lt : new Date(new Date().setHours(0,0,0,0)) }} ,
+        unconfirmed: {
+            filters: {
+                $and: [
+                    { expiry_date: { $lt: new Date(new Date().setHours(0, 0, 0, 0)) } },
                     // { user : { email :  {$notNull : true} }},
-                    { is_delivery_confirmed : {$eq : false } },
+                    { is_delivery_confirmed: { $eq: false } },
                 ]
             },
-            populate: ['user_details', 'address',  'deliveries']
+            populate: ['user_details', 'address', 'deliveries']
         },
         // all : {
         //     // filters: { order : { delivery_time : {$notNull : true} }},
@@ -111,7 +112,7 @@ export default function Expired(props) {
     }
 
     const query = qs.stringify(
-        filterMap[filter], 
+        filterMap[filter],
         { encodeValuesOnly: true, }
     );
 
@@ -124,7 +125,7 @@ export default function Expired(props) {
             setTableData(items)
 
         } catch (ex) {
-            
+
         }
         setLoading(false)
     }
@@ -136,40 +137,47 @@ export default function Expired(props) {
 
     return (
         <>
-            {modalOpen_edit && 
+            {modalOpen_edit &&
                 <Edit
                     val={editVal}
                     onClose={closeEditPopup}
                     callback={fetchOrdersData}
-                /> 
-                
+                />
+
             }
             <div className="p-4">
                 <Alert severity="warning">Just listing all orders in past</Alert>
                 <div className="p-4 flex justify-end">
                     <Renderselect
-                        name="filter" 
-                        options={[ 
-                            {label : 'All', value : 'all'},
+                        name="filter"
+                        options={[
+                            { label: 'All', value: 'all' },
                             // {label : 'Confirmed', value : 'confirmed'}, {label : 'Non confirmed', value : 'unconfirmed'}
-                        ]}  
+                        ]}
                         handleChange={(e) => setFilter(e.target.value)}
                         value={filter}
-                        />
+                    />
                 </div>
                 <div className='shadow-lg bg-wood rounded-xl p-2'>
+                    {loading ?
+                        <div className="w-3/12 mx-auto" >
+                            <TableLoadingProgress color="primary" text="Loading table ..." />
+                        </div>
 
-                    <TableLayout1
-                        tableHeadValues={_tableHeadValues}
-                    >
-                        {[...tableData].map((row) => (
-                            <Rendertablerow
-                                key={row.id}
-                                tableRow={row}
-                                clickEvent={showEditPopup}
-                            />
-                        ))}
-                    </TableLayout1>
+                        :
+
+                        <TableLayout1
+                            tableHeadValues={_tableHeadValues}
+                        >
+                            {[...tableData].map((row) => (
+                                <Rendertablerow
+                                    key={row.id}
+                                    tableRow={row}
+                                    clickEvent={showEditPopup}
+                                />
+                            ))}
+                        </TableLayout1>
+                    }
                 </div>
             </div>
 

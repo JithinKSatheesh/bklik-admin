@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import Divider from '@mui/material/Divider';
 import Icon from '@mui/material/Icon'
+import * as qs from 'qs'
+
+// MUi
+import Alert from '@mui/material/Alert'
 
 // ** components
 import Popup from 'components/Popup'
@@ -8,6 +12,9 @@ import { SavedDeliveryContainer } from './SavedDeliveryContainer';
 
 // ** hooks
 import putDataHooks from 'hooks/putDataHooks'
+
+// ** API
+import { getOrdersById } from 'API/fetch'
 
 
 import { EditOrderForm } from './EditOrderForm';
@@ -86,6 +93,7 @@ export default function Index(props) {
         people: '',
         delivery_time: '',
         delivery_day: '',
+        delivery_time_details : '',
         info: '',
         total_price: '',
         expiry_date: '',
@@ -134,6 +142,30 @@ export default function Index(props) {
         setInputDeliveryVal(initialDeliveryVal)
     }
 
+    const query = qs.stringify(
+        {
+            populate: ['user_details', 'address', 'deliveries']
+        }, 
+        { encodeValuesOnly: true, }
+    );
+
+    const getOrderData = async () => {
+        setLoading(true)
+        try {
+            const res = await getOrdersById(val.id, query)
+            // console.log(res?.data?.data?.attributes)
+            const items = res?.data?.data?.attributes || {}
+            setInputVal(prev => ({
+                ...prev,
+                ...items,
+            }))
+            
+        } catch (ex) {
+            onClose()
+        }
+        setLoading(false)
+    }
+
 
 
     const updateOrder = async () => {
@@ -169,16 +201,21 @@ export default function Index(props) {
 
 
     useEffect(() => {
-        setInputVal(prev => ({
-            ...prev,
-            ...val
-        }))
+        getOrderData()
+        // setInputVal(prev => ({
+        //     ...prev,
+        //     ...val
+        // }))
     }, [])
 
     return (
         <>
-            <Popup onClose={onClose}>
+            <Popup onClose={onClose} loading={loading}>
                 <div className="">
+                    {val?.is_canceled && <Alert severity='error'> This is a cancelled order  </Alert>}
+                    <div className="py-2 font-bold text-right px-4">
+                        #: {(`${val?.createdAt}`).substring(0, 10)}
+                    </div>
                     <div className="py-3 w-full">
                         <div className='font-bold'> {val?.user_details?.username}  </div>
                         <div className='text-slate-500'> {val?.user_details?.email}  </div>
@@ -214,9 +251,9 @@ export default function Index(props) {
                     </div>
                     <div>
                         {console.log(val)}
-                        {val?.bring_nfc && <span className='text-red-500'>
+                        {val?.bring_nfc && <Alert severity='warning' className=''>
                             Customer requested NFC device
-                        </span>}
+                        </Alert>}
                     </div>
                 </div>
                 <div className="py-2">

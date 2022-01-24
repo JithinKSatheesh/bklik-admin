@@ -52,7 +52,7 @@ export default function Rendertablerow(props) {
                 </TableCell>
                 <TableCell align="left" >
                     <div className="text-xs font-bold w-24 cursor-pointer">
-                        {(`${tableRow?.updatedAt}`).substring(0, 10)}
+                        {(`${tableRow?.expiry_date}`).substring(0, 10)}
                     </div>
                 </TableCell>
                 <TableCell align="left" >

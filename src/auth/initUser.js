@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import jwt from 'API/tokenServices'
 import { userStore } from 'store/userStore'
+import { throwToast } from 'components/ThrowToast'
 
 // ** Api
 import { logIn, signUp, getProfile, changePassword, updateProfile } from 'API/fetch'
@@ -34,7 +35,8 @@ export default function Inituser() {
             return true
 
         } catch (ex) {
-            console.log(ex?.response?.data, "Error")
+            // console.log(ex?.response?.data, "Error")
+            throwToast.error("Auth failed")
             const error = ex?.response?.data?.error || {}
             setError(error)
             

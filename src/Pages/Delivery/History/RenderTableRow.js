@@ -75,6 +75,16 @@ export default function Rendertablerow(props) {
                         
                     </div>
                 </TableCell>
+                <TableCell align="left" >
+                    <div className="text-xs font-bold w-24">
+                        {tableRow.is_canceled ?
+                            <div className="text-red-800"> Cancelled</div>
+                            :
+                            <div className="text-green-800"> Ok </div>
+                        }
+                        
+                    </div>
+                </TableCell>
 
 
             </TableRow>

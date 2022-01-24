@@ -13,6 +13,7 @@ import { EditOrderForm } from 'Pages/Edit/EditOrderForm';
 import RenderTextField from 'components/RenderTextField';
 import Renderinputs from 'components/RenderInputs'
 import { SaveButton } from 'components/CommonIcons'
+import LinearProgress from '@mui/material/LinearProgress';
 
 // ** hooks
 import putDataHooks from 'hooks/putDataHooks'
@@ -272,6 +273,7 @@ export default function Index(props) {
 
 
     const getUserData = async () => {
+        setLoading(true)
         try {
             const res = await getUserById(val.id)
             console.log(res.data.data)
@@ -292,6 +294,7 @@ export default function Index(props) {
         } catch (ex) {
             onClose()
         }
+        setLoading(false)
     }
 
     const updateUser = async () => {
@@ -439,7 +442,7 @@ export default function Index(props) {
 
     return (
         <>
-            <Popup onClose={onClose}>
+            <Popup onClose={onClose}  loading={loading}>
                 <div className='font-bold'> {userData.username}  </div>
                 <div className="py-4 flex flex-wrap">
                     <Renderinputs
