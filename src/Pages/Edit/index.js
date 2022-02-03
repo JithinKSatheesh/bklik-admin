@@ -102,6 +102,7 @@ export default function Index(props) {
 
     }
 
+    const [orderData, setOrderData] = useState({})
     const [inputVal, setInputVal] = useState(initialOrderVal)
     const [loading, setLoading] = useState(false)
 
@@ -142,9 +143,17 @@ export default function Index(props) {
         setInputDeliveryVal(initialDeliveryVal)
     }
 
+    const checkExpiry = (expDate) => {
+        const currentDate = new Date()
+        const expiryDate = new Date(new Date(expDate).setHours(23, 59, 0, 0))
+
+        return (currentDate > expiryDate)
+    }
+
     const query = qs.stringify(
         {
-            populate: ['user_details', 'address', 'deliveries']
+            // populate: ['user_details', 'address', 'deliveries']
+            // populate: ['deliveries']
         }, 
         { encodeValuesOnly: true, }
     );
@@ -154,10 +163,25 @@ export default function Index(props) {
         try {
             const res = await getOrdersById(val.id, query)
             // console.log(res?.data?.data?.attributes)
-            const items = res?.data?.data?.attributes || {}
+            const items = res?.data?.data || {}
+            const address = res?.data?.data?.address || {}
+            const deliveries = res?.data?.data?.deliveries || []
+            const user_details = res?.data?.data?.user_details || {}
+            
+
+            console.log(deliveries)
+
             setInputVal(prev => ({
                 ...prev,
                 ...items,
+                address : ''
+            }))
+            setOrderData(prev => ({
+                ...prev,
+                ...items,
+                address,
+                deliveries,
+                user_details
             }))
             
         } catch (ex) {
@@ -177,6 +201,7 @@ export default function Index(props) {
                 ...val
             }))
         } else {
+            getOrderData()
             callback()
         }
         // console.log(res)
@@ -192,6 +217,8 @@ export default function Index(props) {
             //     ...val
             // })) 
         } else {
+            getOrderData()
+            closeEdit()
             callback()
         }
         // console.log(res)
@@ -212,22 +239,27 @@ export default function Index(props) {
         <>
             <Popup onClose={onClose} loading={loading}>
                 <div className="">
-                    {val?.is_canceled && <Alert severity='error'> This is a cancelled order  </Alert>}
+                    {orderData?.is_canceled && <Alert severity='error'> This is a cancelled order  </Alert>}
+                   
+                    {checkExpiry(orderData?.expiry_date) ?
+                        <Alert severity='error'> This order is already expired</Alert>
+                        : null
+                    }
                     <div className="py-2 font-bold text-right px-4">
-                        #: {(`${val?.createdAt}`).substring(0, 10)}
+                        #: {(`${orderData?.createdAt}`).substring(0, 10)}
                     </div>
                     <div className="py-3 w-full">
-                        <div className='font-bold'> {val?.user_details?.username}  </div>
-                        <div className='text-slate-500'> {val?.user_details?.email}  </div>
-                        <div className='text-slate-500 text-xs'> {val?.user_details?.phone}  </div>
+                        <div className='font-bold'> {orderData?.user_details?.username}  </div>
+                        <div className='text-slate-500'> {orderData?.user_details?.email}  </div>
+                        <div className='text-slate-500 text-xs'> {orderData?.user_details?.phone}  </div>
                     </div>
                     <Divider />
                     <div className="py-4 w-full">
                         <div className='font-bold'>  Address  </div>
-                        <div className='text-sm'> {val?.address?.name}  </div>
-                        <div className='text-sm'> {val?.address?.address}  </div>
-                        <div className='text-sm'> {val?.address?.phone}  </div>
-                        <div className='text-sm'> {val?.address?.info}  </div>
+                        <div className='text-sm'> {orderData?.address?.name}  </div>
+                        <div className='text-sm'> {orderData?.address?.address}  </div>
+                        <div className='text-sm'> {orderData?.address?.phone}  </div>
+                        <div className='text-sm'> {orderData?.address?.info}  </div>
                     </div>
                 </div>
 
@@ -247,11 +279,11 @@ export default function Index(props) {
                 <div className="py-4">
                     <div className='font-bold'> Payment Details </div>
                     <div>
-                        {val?.payment_mode}
+                        {orderData?.payment_mode}
                     </div>
                     <div>
-                        {console.log(val)}
-                        {val?.bring_nfc && <Alert severity='warning' className=''>
+                        {/* {console.log(val)} */}
+                        {orderData?.bring_nfc && <Alert severity='warning' className=''>
                             Customer requested NFC device
                         </Alert>}
                     </div>
@@ -266,7 +298,7 @@ export default function Index(props) {
                 <div>
                     <div className="flex flex-wrap">
                         <SavedDeliveryContainer
-                            deliveryData={val?.deliveries ?? []}
+                            deliveryData={orderData?.deliveries ?? []}
                             editCardId={editCardId}
                             deliveryEditInputVal={inputDeliveryVal}
                             handleEditDeliveryChange={handleDeliveryChange}

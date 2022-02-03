@@ -1,20 +1,20 @@
 import React, {useEffect, useState} from 'react'
 import Paper from '@mui/material/Paper'
-import Alert from '@mui/material/Alert';
 import * as qs from 'qs'
 
 // **mUi
 import Renderselect from 'components/RenderSelect'
+import {TableLoadingProgress} from 'components/LoadingProgress'
+import RenderTextField from 'components/RenderTextField'
 
 import { TableLayout1 } from 'components/TableLayout1'
-import {TableLoadingProgress} from 'components/LoadingProgress'
 
 // **components
 import Rendertablerow from './RenderTableRow'
-import Edit from '../../Edit'
+import Edit from '../Edit'
 
 // API
-import { getOrders } from 'API/fetch'
+import { getIssues } from 'API/fetch'
 
 export default function Active(props) {
 
@@ -27,33 +27,16 @@ export default function Active(props) {
         },
         {
             id: 2,
-            value: 'Address',
+            value: 'Description',
             align: 'left'
         },
         {
             id: 3,
-            value: 'Quantity',
-            align: 'left'
-        },
-        {
-            id: 4,
-            value: 'Price',
+            value: 'Date',
             align: 'right'
         },
         {
             id: 6,
-            value: 'Expiry date',
-            align: 'left',
-        },
-        {
-            id: 7,
-            value: 'Payment',
-            align: 'left',
-        },
-        {
-            id: 8,
-            value: 'Status',
-            align: 'left',
         }
 
     ]
@@ -64,6 +47,8 @@ export default function Active(props) {
     const [modalOpen_edit, setModalOpen_edit] = useState(false)
     const [editVal, setEditVal] = useState({})
     const [filter, setFilter] = useState('all')
+    const [searchQuery, setSearchQuery] = useState('')
+    
 
     const showEditPopup = (id) => {
         setModalOpen_edit(true)
@@ -76,42 +61,20 @@ export default function Active(props) {
     }
 
     const filterMap = {
+        solved : {
+            sort: ['id:desc'],
+            filters: { is_solved : {$eq : true } },
+            // _q : searchQuery,
+            // fields : ['username','email', 'phone'],
+            // filters: { order : { id : {$eq : 4} }},
+            populate: ['user', 'order']
+        },
         all : {
             sort: ['id:desc'],
-            filters: { 
-                $and : [
-                    { expiry_date : {$gte : new Date(new Date().setHours(0,0,0,0)) }} ,
-                    { user : { email :  {$notNull : true} }},
-                ]
-            },
-            populate: ['user_details', 'address', 'deliveries']
+            // _q : searchQuery,
+            // fields : ['username','email', 'phone'],
+            populate: ['user', 'order']
         },
-        confirmed : {
-            sort: ['id:desc'],
-            filters: { 
-                $and : [
-                    { expiry_date : {$gte : new Date(new Date().setHours(0,0,0,0)) }} ,
-                    { user : { email :  {$notNull : true} }},
-                    { is_delivery_confirmed : {$eq : true } },
-                ]
-            },
-            populate: ['user_details', 'address', 'deliveries']
-        },
-        unconfirmed : {
-            sort: ['id:desc'],
-            filters: { 
-                $and : [
-                    { expiry_date : {$gte : new Date(new Date().setHours(0,0,0,0)) }} ,
-                    { user : { email :  {$notNull : true} }},
-                    { is_delivery_confirmed : {$eq : false } },
-                ]
-            },
-            populate: ['user_details', 'address',  'deliveries']
-        },
-        // all : {
-        //     // filters: { order : { delivery_time : {$notNull : true} }},
-        //     populate: ['user_details', 'address']
-        // },
     }
 
     const query = qs.stringify(
@@ -120,10 +83,11 @@ export default function Active(props) {
     );
 
 
-    const fetchOrdersData = async () => {
+    const fetchIssueData = async () => {
         setLoading(true)
         try {
-            const res = await getOrders(query)
+            const res = await getIssues(query)
+            console.log(res)
             const items = res.data.data || []
             setTableData(items)
 
@@ -134,7 +98,7 @@ export default function Active(props) {
     }
 
     useEffect(() => {
-        fetchOrdersData()
+        fetchIssueData()
     }, [filter])
 
 
@@ -144,39 +108,40 @@ export default function Active(props) {
                 <Edit
                     val={editVal}
                     onClose={closeEditPopup}
-                    callback={fetchOrdersData}
+                    callback={fetchIssueData}
                 /> 
                 
             }
             <div className="p-4">
-                <Alert severity="info">Active order means - All orders that is not expired!</Alert>
                 <div className="p-4 flex justify-end">
                     <Renderselect
                         name="filter" 
-                        options={[ {label : 'All', value : 'all'},{label : 'Confirmed', value : 'confirmed'}, {label : 'Non confirmed', value : 'unconfirmed'}]}  
+                        options={[{label : 'All' , value : 'all'}, {label : 'Solved', value : 'solved'}]}  
                         handleChange={(e) => setFilter(e.target.value)}
                         value={filter}
                         />
                 </div>
                 <div className='shadow-lg bg-wood rounded-xl p-2'>
                     {loading ?
-                     <div className="w-3/12 mx-auto" >
-                     <TableLoadingProgress color="primary" text="Loading table ..." />
-                 </div>
-                 :
-
+                    <div className="w-3/12 mx-auto" >
+                        <TableLoadingProgress color="primary" text="Loading table ..." />
+                    </div>
+                    :
                     <TableLayout1
                         tableHeadValues={_tableHeadValues}
                     >
+
                         {[...tableData].map((row) => (
                             <Rendertablerow
                                 key={row.id}
                                 tableRow={row}
+                                loading={loading}
                                 clickEvent={showEditPopup}
                             />
                         ))}
+
                     </TableLayout1>
-                }
+                    }
 
                 </div>
             </div>

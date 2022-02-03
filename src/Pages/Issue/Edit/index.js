@@ -282,7 +282,7 @@ export default function Index(props) {
     const getUserData = async () => {
         setLoading(true)
         try {
-            const res = await getUserById(val.id)
+            const res = await getUserById(val?.user.id)
             console.log(res.data.data)
             const item = res?.data?.data || {}
             const { email, username, phone } = item
@@ -295,10 +295,10 @@ export default function Index(props) {
                 phone,
                 password : ''
             }))
-            setInputOrderVal(prev => ({
-                ...orderval,
-                address : orderval?.address?.id
-            }))
+            // setInputOrderVal(prev => ({
+            //     ...orderval,
+            //     address : orderval?.address?.id
+            // }))
         } catch (ex) {
             onClose()
         }
@@ -307,7 +307,7 @@ export default function Index(props) {
 
     const updateUser = async () => {
         setLoading(true)
-        const res = await updateUserData(val.id, inputVal)
+        const res = await updateUserData(val?.user?.id, inputVal)
         if (!res) {
             setInputVal(prev => ({
                 ...prev,
@@ -325,7 +325,7 @@ export default function Index(props) {
         setLoading(true)
         const payload = {
             ...inputAddressVal,
-            default_address_user: inputAddressVal?.is_default ? val.id : ''
+            default_address_user: inputAddressVal?.is_default ? val?.user?.id : ''
         }
         const res = await editAddressData(editCardId, payload)
         if (!res) {
@@ -446,14 +446,28 @@ export default function Index(props) {
 
     useEffect(() => {
         getUserData()
+         setInputOrderVal(prev => ({
+                ...val?.order,
+                address : val?.order?.address?.id
+            }))
 
     }, [])
 
     return (
         <>
             <Popup onClose={onClose}  loading={loading}>
-                <div className='font-bold'> {userData.username}  </div>
-                <div className="py-4 flex flex-wrap">
+                <div className='font-bold pb-2'> {userData.username}  </div>
+                <div className="py-2">
+                    User message
+                </div>
+                <Alert severity='error'>
+                    {val?.description}
+                </Alert>
+
+                <div className="py-2">
+                    User Details
+                </div>
+                <div className="py-4 flex flex-wrap pt-3">
                     <Renderinputs
                         inputFileds={_inputFields}
                         handleInputChange={handleInputChange}
@@ -521,12 +535,17 @@ export default function Index(props) {
                     <Divider />
                 </div>
                 <div className="py-4">
-                    <div className='font-bold'> Current Order  </div>
+                    <div className='font-bold'> Reported Order  </div>
                 </div>
+                {inputOrderVal?.is_canceled ?
+                    <Alert severity='error'> This order is Cancelled</Alert>
+                    : null
+                }
                 {checkExpiry(inputOrderVal?.expiry_date) ?
                     <Alert severity='error'> This order is already expired</Alert>
                     : null
                 }
+                
                 <div>
                     {inputOrderVal?.id ?
                         <>

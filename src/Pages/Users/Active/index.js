@@ -68,12 +68,14 @@ export default function Active(props) {
                 },
             },
             _q : searchQuery,
+            fields : ['username','email', 'phone'],
             // filters: { order : { id : {$eq : 4} }},
             populate: ['default_address', 'addresses']
         },
         all : {
             // filters: { order : { delivery_time : {$notNull : true} }},
             _q : searchQuery,
+            fields : ['username','email', 'phone'],
             populate: ['default_address', 'addresses']
         },
     }

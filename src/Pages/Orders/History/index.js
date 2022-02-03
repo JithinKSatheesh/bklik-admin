@@ -77,6 +77,7 @@ export default function Expired(props) {
 
     const filterMap = {
         all: {
+            sort: ['id:desc'],
             // filters: { 
             //     $and : [
             //         { expiry_date : {$lt : new Date(new Date().setHours(0,0,0,0)) }} ,
@@ -85,30 +86,7 @@ export default function Expired(props) {
             // },
             populate: ['user_details', 'address', 'deliveries']
         },
-        confirmed: {
-            filters: {
-                $and: [
-                    { expiry_date: { $lt: new Date(new Date().setHours(0, 0, 0, 0)) } },
-                    // { user : { email :  {$notNull : true} }},
-                    { is_delivery_confirmed: { $eq: true } },
-                ]
-            },
-            populate: ['user_details', 'address', 'deliveries']
-        },
-        unconfirmed: {
-            filters: {
-                $and: [
-                    { expiry_date: { $lt: new Date(new Date().setHours(0, 0, 0, 0)) } },
-                    // { user : { email :  {$notNull : true} }},
-                    { is_delivery_confirmed: { $eq: false } },
-                ]
-            },
-            populate: ['user_details', 'address', 'deliveries']
-        },
-        // all : {
-        //     // filters: { order : { delivery_time : {$notNull : true} }},
-        //     populate: ['user_details', 'address']
-        // },
+        
     }
 
     const query = qs.stringify(

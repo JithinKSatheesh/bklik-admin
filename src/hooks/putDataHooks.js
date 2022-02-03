@@ -75,8 +75,8 @@ export default function Putdatahooks(props) {
 
     const updateUserData = async(id, payload) => {
 
-        const {username, phone } = payload
-        const _payload = clean({username, phone })
+        const {username, phone, password } = payload
+        const _payload = clean({username, phone, password })
 
         try {
 

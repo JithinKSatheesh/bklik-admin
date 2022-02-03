@@ -31,6 +31,11 @@ export default function Sidebar(props) {
             link : `${root}/delivery`
         },
         {
+            icon : 'error',
+            label : 'Reported Issues',
+            link : `${root}/issues`
+        },
+        {
             icon : 'settings',
             label : 'Config ',
             link : `${root}/config`
@@ -43,7 +48,7 @@ export default function Sidebar(props) {
         {/* {console.log(location)} */}
            {NavList.map(item =>  
             <Link key={item.label}  to={item.link} className={`flex items-center cursor-pointer hover:bg-white  ${location === item.link ? 'bg-orange text-white' : null} `}>
-            <div  className={`px-2 py-4  my-2 `} >
+            <div  className={`px-2 py-4  my-2  flex items-center`} >
                 <span className="mr-2">
                     <Icon> {item.icon} </Icon>
                 </span>

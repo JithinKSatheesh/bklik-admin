@@ -9,6 +9,7 @@ import Orders from 'Pages/Orders'
 import Delivery from 'Pages/Delivery'
 import Dashboard from "Pages/Dashboard"
 import Config from 'Pages/Config'
+import Issues from 'Pages/Issue'
 
 const ROUTES = [
     { path: "/", key: "ROOT", exact: true, component: () => <h1>Home</h1> },
@@ -50,9 +51,15 @@ const ROUTES = [
         },
         {
           path: "/dashboard/config",
-          key: "APP_account",
+          key: "App_issue",
           exact: true,
           component: () => <Config />,
+        },
+        {
+          path: "/dashboard/issues",
+          key: "APP_account",
+          exact: true,
+          component: () => <Issues />,
         },
         {
           path: "/dashboard/logout",

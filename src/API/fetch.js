@@ -93,7 +93,7 @@ export function updateOrders (id, payload) {
 }
 
 export function getOrdersById (id, query) {
-  return  axios.get(`${BASE_URL}orders/${id}?${query}`)
+  return  axios.get(`${BASE_URL}admin/orders/${id}`)
 }
 
 // Order admin
@@ -117,6 +117,23 @@ export function confirmOrderEmail (id) {
 export function updateDelivery (id, payload) {
   return  axios.put(`${BASE_URL}deliveries/${id}`, { data : payload})
 }
+
+
+
+// ---------------------------------------
+// issues
+// ---------------------------------------
+
+export function getIssues (query) {
+  return  axios.get(`${BASE_URL}admin/issue/order?${query}`)
+}
+
+export function updateIssues (id, payload) {
+  return  axios.put(`${BASE_URL}issues/${id}`, {
+    data : payload
+  })
+}
+
 
 
 // ---------------------------------------
