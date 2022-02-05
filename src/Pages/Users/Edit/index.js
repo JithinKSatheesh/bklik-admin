@@ -12,6 +12,7 @@ import { EditOrderForm } from 'Pages/Edit/EditOrderForm';
 // comontnets
 import RenderTextField from 'components/RenderTextField';
 import Renderinputs from 'components/RenderInputs'
+import Renderswitch from 'components/RenderSwitch';
 import { SaveButton } from 'components/CommonIcons'
 import LinearProgress from '@mui/material/LinearProgress';
 
@@ -34,6 +35,7 @@ export default function Index(props) {
         username: "",
         phone: "",
         password : '',
+        blocked : false,
 
     }
 
@@ -48,7 +50,7 @@ export default function Index(props) {
 
 
     const initialOrderVal = {
-        weeks: '',
+        recipe_per_week: '',
         people: '',
         delivery_time: '',
         delivery_day: '',
@@ -133,9 +135,9 @@ export default function Index(props) {
         },
         {
             name: "is_default",
-            labelText: "is default",
+            labelText: "Is default address?",
             type: 'select',
-            options: [{ value: true, label: 'true' }, { value: false, label: 'false' }],
+            options: [{ value: true, label: 'Make default address' }, { value: false, label: 'Not default address' }],
             wrapperClass: ''
         },
 
@@ -144,8 +146,8 @@ export default function Index(props) {
     const _inputFieldsOrder = [
 
         {
-            name: "weeks",
-            labelText: "weeks",
+            name: "recipe_per_week",
+            labelText: "Recipe_per_week",
             type: 'text',
             wrapperClass: ''
         },
@@ -154,12 +156,12 @@ export default function Index(props) {
             labelText: "people",
             type: 'text'
         },
-        {
-            name: "delivery_time",
-            labelText: "Delivery time",
-            type: 'text',
-            wrapperClass: ''
-        },
+        // {
+        //     name: "delivery_time",
+        //     labelText: "Delivery time",
+        //     type: 'text',
+        //     wrapperClass: ''
+        // },
         {
             name: "delivery_day",
             labelText: "Delivery day",
@@ -167,12 +169,7 @@ export default function Index(props) {
             options: [{ value: 'Sunday', label: 'Sunday' }, { value: 'Saturday', label: 'Saturday' }],
             wrapperClass: ''
         },
-        {
-            name: "info",
-            labelText: "Info",
-            type: 'text',
-            wrapperClass: ''
-        },
+     
         {
             name: "total_price",
             labelText: "Total price",
@@ -190,6 +187,12 @@ export default function Index(props) {
             labelText: "Address",
             type: 'select',
             options: userData?.addresses?.map(item => ({value : item.id, label : item.address})) ,
+            wrapperClass: ''
+        },
+        {
+            name: "info",
+            labelText: "Info, food type, allergies",
+            type: 'text',
             wrapperClass: ''
         },
 
@@ -285,7 +288,7 @@ export default function Index(props) {
             const res = await getUserById(val.id)
             console.log(res.data.data)
             const item = res?.data?.data || {}
-            const { email, username, phone } = item
+            const { email, username, phone, blocked } = item
             const orderval = item?.order ?? {}
             setuserData(item)
             setInputVal(prev => ({
@@ -293,7 +296,8 @@ export default function Index(props) {
                 email,
                 username,
                 phone,
-                password : ''
+                password : '',
+                blocked
             }))
             setInputOrderVal(prev => ({
                 ...orderval,
@@ -462,7 +466,20 @@ export default function Index(props) {
                         // valErrors={valErrors}
                         wrapperClass="my-2 w-2/4 px-2"
                     />
+                    
+                   
                 </div>
+                <Alert severity='warning' className='my-3' icon={false}>
+                    <Renderswitch
+                        value={inputVal?.blocked}
+                        handleChange={(e) => handleInputChange({ 'blocked': e.target.checked })}
+                        labelText="block/ unblock" />
+                    Toggle the  switch to block or unblock a user. <br />
+                    user will be appeared as blocked if user delete the account from bklik website
+                </Alert>
+                <Alert severity='info' className='my-3' >
+                    Always click Update User button after changes.
+                </Alert>
                 <div className='flex justify-start'>
                     <SaveButton loading={loading} callback={updateUser} label="Update user" />
                 </div>

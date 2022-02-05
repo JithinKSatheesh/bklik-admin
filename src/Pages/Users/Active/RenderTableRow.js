@@ -49,7 +49,7 @@ export default function Rendertablerow(props) {
                 </TableCell>
                 <TableCell  className="cursor-pointer w-2/5" align={'left'}>
                         
-                            {tableRow?.default_address?.address}
+                            {tableRow?.default_address?.phone}
                         
                    
                 </TableCell>

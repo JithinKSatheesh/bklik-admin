@@ -28,8 +28,8 @@ export default function Index(props) {
     const _inputFields = [
 
         {
-            name: "weeks",
-            labelText: "weeks",
+            name: "recipe_per_week",
+            labelText: "recipe_per_week",
             type: 'text',
             wrapperClass: ''
         },
@@ -38,12 +38,12 @@ export default function Index(props) {
             labelText: "people",
             type: 'text'
         },
-        {
-            name: "delivery_time",
-            labelText: "Delivery time",
-            type: 'text',
-            wrapperClass: ''
-        },
+        // {
+        //     name: "delivery_time",
+        //     labelText: "Delivery time",
+        //     type: 'text',
+        //     wrapperClass: ''
+        // },
         {
             name: "delivery_day",
             labelText: "Delivery day",
@@ -51,18 +51,13 @@ export default function Index(props) {
             options: [{ value: 'Sunday', label: 'Sunday' }, { value: 'Saturday', label: 'Saturday' }],
             wrapperClass: ''
         },
-        {
-            name: "delivery_time_details",
-            labelText: "Delivery time details",
-            type: 'text',
-            wrapperClass: ''
-        },
-        {
-            name: "info",
-            labelText: "Info",
-            type: 'text',
-            wrapperClass: ''
-        },
+        // {
+        //     name: "delivery_time_details",
+        //     labelText: "Delivery time details",
+        //     type: 'text',
+        //     wrapperClass: ''
+        // },
+       
         {
             name: "total_price",
             labelText: "Total price",
@@ -73,6 +68,12 @@ export default function Index(props) {
             name: "expiry_date",
             labelText: "Expiry date",
             type: 'date',
+            wrapperClass: ''
+        }, 
+        {
+            name: "info",
+            labelText: "Info, food type..",
+            type: 'text',
             wrapperClass: ''
         },
 

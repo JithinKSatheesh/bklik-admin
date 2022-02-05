@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import Alert from '@mui/material/Alert';
 
 import DeliveryCard from 'components/DeliveryCard';
 import { CloseButton, DeleteButton, SaveButton} from 'components/CommonIcons';
@@ -53,11 +54,14 @@ export const SavedDeliveryContainer = (props) => {
                             />
                     </div>
                     <div className="py-2">
-                        <Renderswitch 
-                            labelText="is delivered"
-                            value={deliveryEditInputVal.is_delivered}
-                            handleChange={(e) => handleEditDeliveryChange({'is_delivered' : e.target.checked})}
-                            />
+                        <Alert severity='info' icon={false}>
+                            <Renderswitch 
+                                labelText="is box delivered."
+                                value={deliveryEditInputVal.is_delivered}
+                                handleChange={(e) => handleEditDeliveryChange({'is_delivered' : e.target.checked})}
+                                />
+                            Mark it "On" position if the box is delivered to user!. Also click "update data" after change
+                        </Alert>
                     </div>
                     {/* <div className='py-4 w-full '>
                         <RadioButtons
