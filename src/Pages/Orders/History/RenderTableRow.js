@@ -12,7 +12,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 export default function Rendertablerow(props) {
 
-    const { tableRow, clickEvent } = props;
+    const { tableRow, clickEvent, index } = props;
     const [loading, setLoading] = useState(false);
 
     const handleClickEvent = async() => {
@@ -25,13 +25,21 @@ export default function Rendertablerow(props) {
         <>
             <TableRow onClick={handleClickEvent} hover sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 <TableCell   className="cursor-pointer w-2/5" align={'left'}>
-                
-                        <div className='text-xs '>
-                            {tableRow?.user_details?.username}
+                        <div className="flex">
+                            <div className="mr-1">
+                                {index + 1})
+                            </div>
+                            <div>
+                                <div className='text-xs '>
+                                    {tableRow?.user_details?.name}
+                                </div>
+                                <div className="text-xs text-slate-500">
+                                    {tableRow?.user_details?.email}
+                                </div>
+                            </div>
+
                         </div>
-                        <div className="text-xs text-slate-500">
-                            {tableRow?.user_details?.email}
-                        </div>
+                       
                         
                     
                 </TableCell>
@@ -42,7 +50,7 @@ export default function Rendertablerow(props) {
                 </TableCell>
                 <TableCell  className="cursor-pointer w-2/5" align={'left'}>
                     <div className="text-xs">
-                        {tableRow?.weeks} weeks x  {tableRow?.people} people
+                        {tableRow?.recipe_per_week} recipe_per_week x  {tableRow?.people} people
                     </div>
                 </TableCell>
                 <TableCell align="right" >
@@ -68,11 +76,18 @@ export default function Rendertablerow(props) {
                 <TableCell align="left" >
                     <div className="text-xs font-bold w-24">
                         {tableRow.is_canceled ?
-                            <div className="text-red-800"> Cancelled</div>
+                            <div className="text-red-500">Order&nbsp;cancelled</div>
                             :
-                            <div className="text-green-800"> Ok</div>
+                            tableRow?.is_delivery_confirmed ?
+                                tableRow?.deliveries[0]?.is_delivered ?
+                                    <div className="text-green-800"> Delivered</div>
+                                    :
+                                    <div className="text-amber-600">Box&nbsp;not&nbsp;delivered</div>
+                                :
+                                <div className="text-red-800">Order&nbsp;not&nbsp;confirmed</div>
                         }
-                        
+
+
                     </div>
                 </TableCell>
 

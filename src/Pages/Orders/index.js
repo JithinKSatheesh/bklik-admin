@@ -17,14 +17,14 @@ export default function Users(props) {
 
     const _tabHead = [
         {
-            id: 'active',
-            label : 'Active Orders',
-            // link : '/dashboard/users/active'
-        },
-        {
             id: 'waiting',
             label : 'UnConfirmed Orders',
             // link : '/dashboard/users/all'
+        },
+        {
+            id: 'active',
+            label : 'Active Orders',
+            // link : '/dashboard/users/active'
         },
         {
             id: 'expired',
@@ -73,7 +73,7 @@ export default function Users(props) {
             </div>
         </div>
         <div className="py-4">
-            <CommonTabs  tabHead={_tabHead} tabContent={_tabContent} intialVal={'active'} />
+            <CommonTabs  tabHead={_tabHead} tabContent={_tabContent} intialVal={'waiting'} />
         </div>
             
         </>

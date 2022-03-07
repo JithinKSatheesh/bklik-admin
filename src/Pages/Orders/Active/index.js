@@ -63,7 +63,7 @@ export default function Active(props) {
 
     const [modalOpen_edit, setModalOpen_edit] = useState(false)
     const [editVal, setEditVal] = useState({})
-    const [filter, setFilter] = useState('all')
+    const [filter, setFilter] = useState('confirmed')
 
     const showEditPopup = (id) => {
         setModalOpen_edit(true)
@@ -82,6 +82,7 @@ export default function Active(props) {
                 $and : [
                     { expiry_date : {$gte : new Date(new Date().setHours(0,0,0,0)) }} ,
                     { user : { email :  {$notNull : true} }},
+                    {deliveries : {is_delivered : {$eq : false} }}
                 ]
             },
             populate: ['user_details', 'address', 'deliveries']
@@ -93,6 +94,7 @@ export default function Active(props) {
                     { expiry_date : {$gte : new Date(new Date().setHours(0,0,0,0)) }} ,
                     { user : { email :  {$notNull : true} }},
                     { is_delivery_confirmed : {$eq : true } },
+                    {deliveries : {is_delivered : {$eq : false} }}
                 ]
             },
             populate: ['user_details', 'address', 'deliveries']
@@ -104,6 +106,7 @@ export default function Active(props) {
                     { expiry_date : {$gte : new Date(new Date().setHours(0,0,0,0)) }} ,
                     { user : { email :  {$notNull : true} }},
                     { is_delivery_confirmed : {$eq : false } },
+                    {deliveries : {is_delivered : {$eq : false} }}
                 ]
             },
             populate: ['user_details', 'address',  'deliveries']
@@ -149,7 +152,10 @@ export default function Active(props) {
                 
             }
             <div className="p-4">
-                <Alert severity="info">Active order means - All orders that is not expired!</Alert>
+                <Alert severity="info">
+                        Active order means - All orders that is not expired!
+                        and not yet delivered.
+                        </Alert>
                 <div className="p-4 flex justify-end">
                     <Renderselect
                         name="filter" 
@@ -177,6 +183,9 @@ export default function Active(props) {
                         ))}
                     </TableLayout1>
                 }
+                    {tableData?.length <= 0 && <div className='text-center pt-10'>
+                        No data to display!
+                    </div>}
 
                 </div>
             </div>

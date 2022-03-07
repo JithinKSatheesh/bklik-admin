@@ -31,6 +31,18 @@ export const EditOrderForm = (props) => {
                 </Alert>
              
             </div>
+            <div className='w-full py-2'>
+            <Alert  severity={'success'} icon={false} >
+                {inputVal?.language ? <>
+                   User is using "{inputVal?.language === 'arm' ? "Armenian" : "English"}" as language
+                </> : 
+                <>
+                    Couldn't dectect user language.
+                </>
+                }
+            </Alert>
+             
+            </div>
             {console.log(inputVal)}
             <Renderinputs
                 inputFileds={_inputFields}
@@ -42,6 +54,9 @@ export const EditOrderForm = (props) => {
         </div>
         { inputVal?.is_glutan_free  && <Alert className='my-2' severity='success' icon={false}>
              User need vegetarian food
+        </Alert>}
+        { inputVal?.is_lent  && <Alert className='my-2' severity='success' icon={false}>
+            Food restrictions : Lent
         </Alert>}
         <div className='flex justify-start'>
             <SaveButton loading={loading} callback={updateOrder} label="Update Order" />

@@ -147,10 +147,11 @@ export default function Expired(props) {
                         <TableLayout1
                             tableHeadValues={_tableHeadValues}
                         >
-                            {[...tableData].map((row) => (
+                            {[...tableData].map((row, index) => (
                                 <Rendertablerow
                                     key={row.id}
                                     tableRow={row}
+                                    index={index}
                                     clickEvent={showEditPopup}
                                 />
                             ))}

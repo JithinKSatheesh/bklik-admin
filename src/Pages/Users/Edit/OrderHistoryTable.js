@@ -51,10 +51,25 @@ export const OrderHistoryTable = (props) => {
                             {item?.expiry_date}
                         </TableCell>
                         <TableCell>
-                            {item?.is_canceled ?
+                            {/* {item?.is_canceled ?
                                 <span className='text-red-500'> Canceled</span> 
                                  : 
-                                <span className='text-green-500'> Ok </span>}
+                                <span className='text-green-500'> Ok </span>} */}
+                            {
+                                item?.is_delivery_confirmed ?
+                                    <div className="text-green-800">Order&nbsp;confirmed</div>
+                                    :
+                                    <div className="text-red-800">Order&nbsp;not&nbsp;confirmed</div>
+                            }
+                            
+                            {item.is_canceled ?
+                                <div className="text-red-500">Order&nbsp;cancelled</div>
+                                :
+                                item?.deliveries?.[0]?.is_delivered ?
+                                    <div className="text-green-800"> Box&nbsp;Delivered</div>
+                                    :
+                                    <div className="text-amber-600">Box&nbsp;not&nbsp;delivered</div>
+                            }
                         </TableCell>
 
                     </TableRow>);

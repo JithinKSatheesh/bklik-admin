@@ -50,7 +50,7 @@ export default function Rendertablerow(props) {
                 </TableCell>
                 <TableCell onClick={handleClickEvent}  className="cursor-pointer w-2/5" align={'left'}>
                     <div className="text-xs">
-                        {tableRow?.weeks} weeks x  {tableRow?.people} people
+                        {tableRow?.recipe_per_week} recipe_per_week x  {tableRow?.people} people
                     </div>
                 </TableCell>
                 <TableCell onClick={handleClickEvent} align="right" >

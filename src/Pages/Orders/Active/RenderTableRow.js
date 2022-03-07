@@ -42,7 +42,7 @@ export default function Rendertablerow(props) {
                 </TableCell>
                 <TableCell  className="cursor-pointer w-2/5" align={'left'}>
                     <div className="text-xs">
-                        {tableRow?.weeks} weeks x  {tableRow?.people} people
+                        {tableRow?.recipe_per_week} Recipe_per_week x  {tableRow?.people} people
                     </div>
                 </TableCell>
                 <TableCell align="right" >
@@ -68,9 +68,9 @@ export default function Rendertablerow(props) {
                 <TableCell align="left" >
                     <div className="text-xs font-bold w-24">
                         {tableRow.is_delivery_confirmed ?
-                            <div className="text-green-800"> Confirmed</div>
+                            <div className="text-green-800">Order&nbsp;Confirmed</div>
                             :
-                            <div className="text-red-800"> Not confirmed</div>
+                            <div className="text-red-800"> Not&nbsp;confirmed</div>
                         }
                         
                     </div>

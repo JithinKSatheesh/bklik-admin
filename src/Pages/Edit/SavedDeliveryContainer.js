@@ -60,7 +60,9 @@ export const SavedDeliveryContainer = (props) => {
                                 value={deliveryEditInputVal.is_delivered}
                                 handleChange={(e) => handleEditDeliveryChange({'is_delivered' : e.target.checked})}
                                 />
-                            Mark it "On" position if the box is delivered to user!. Also click "update data" after change
+                            Mark it "On" position if the box is delivered to user!. Also click "update data" after change.
+                            <br/>
+                            This will also send an email to user.
                         </Alert>
                     </div>
                     {/* <div className='py-4 w-full '>

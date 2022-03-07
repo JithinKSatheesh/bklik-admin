@@ -38,12 +38,12 @@ export default function Index(props) {
             labelText: "people",
             type: 'text'
         },
-        // {
-        //     name: "delivery_time",
-        //     labelText: "Delivery time",
-        //     type: 'text',
-        //     wrapperClass: ''
-        // },
+        {
+            name: "delivery_time",
+            labelText: "Delivery time",
+            type: 'text',
+            wrapperClass: ''
+        },
         {
             name: "delivery_day",
             labelText: "Delivery day",
@@ -51,12 +51,12 @@ export default function Index(props) {
             options: [{ value: 'Sunday', label: 'Sunday' }, { value: 'Saturday', label: 'Saturday' }],
             wrapperClass: ''
         },
-        // {
-        //     name: "delivery_time_details",
-        //     labelText: "Delivery time details",
-        //     type: 'text',
-        //     wrapperClass: ''
-        // },
+        {
+            name: "delivery_time_details",
+            labelText: "Delivery time details",
+            type: 'text',
+            wrapperClass: ''
+        },
        
         {
             name: "total_price",
@@ -211,7 +211,7 @@ export default function Index(props) {
 
     const updateDelivery = async () => {
         setLoading(true)
-        const res = await updateDeliveryData(editCardId, inputDeliveryVal)
+        const res = await updateDeliveryData(editCardId, inputDeliveryVal, val.id)
         if (!res) {
             // setInputDeliveryVal(prev => ({
             //     ...prev,

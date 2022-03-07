@@ -77,38 +77,29 @@ export default function Expired(props) {
 
     const filterMap = {
         all: {
+            sort: ['id:desc'],
             filters: {
                 $and: [
                     { expiry_date: { $lt: new Date(new Date().setHours(0, 0, 0, 0)) } },
-                    // { user : { email :  {$notNull : true} }},
+                    { user : { email :  {$notNull : true} }},
+                    {deliveries : {is_delivered : {$eq : false} }}
                 ]
             },
             populate: ['user_details', 'address', 'deliveries']
         },
         relavent: {
+            sort: ['id:desc'],
             filters: {
                 $and: [
                     { expiry_date: { $lt: new Date(new Date().setHours(0, 0, 0, 0)) } },
                     { user: { email: { $notNull: true } } },
                     // { is_delivery_confirmed : {$eq : true } },
+                    {deliveries : {is_delivered : {$eq : false} }}
                 ]
             },
             populate: ['user_details', 'address', 'deliveries']
         },
-        // unconfirmed : {
-        //     filters: { 
-        //         $and : [
-        //             { expiry_date : {$lt : new Date(new Date().setHours(0,0,0,0)) }} ,
-        //             { user : { email :  {$notNull : true} }},
-        //             { is_delivery_confirmed : {$eq : false } },
-        //         ]
-        //     },
-        //     populate: ['user_details', 'address',  'deliveries']
-        // },
-        // all : {
-        //     // filters: { order : { delivery_time : {$notNull : true} }},
-        //     populate: ['user_details', 'address']
-        // },
+        
     }
 
     const query = qs.stringify(
@@ -147,7 +138,8 @@ export default function Expired(props) {
             }
             <div className="p-4">
                 <Alert severity="error">
-                    Expired order means the orders that's last delivery date is already passed!
+                    Expired order means the orders that's last delivery date is already passed
+                    and box not yet delivered!
                     <br /> <br /> Apply "Relavent" filter - to get only last order of a user
                 </Alert>
                 <div className="p-4 flex justify-end">
@@ -181,6 +173,9 @@ export default function Expired(props) {
                             ))}
                         </TableLayout1>
                     }
+                     {tableData?.length <= 0 && <div className='text-center pt-10'>
+                        No data to display!
+                    </div>}
                 </div>
             </div>
 

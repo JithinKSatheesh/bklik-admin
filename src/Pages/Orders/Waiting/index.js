@@ -80,6 +80,7 @@ export default function Active(props) {
     const filterMap = {
 
         unconfirmed: {
+            sort: ['id:desc'],
             filters: {
                 $and: [
                     { expiry_date: { $gte: new Date(new Date().setHours(0, 0, 0, 0)) } },
@@ -171,7 +172,9 @@ export default function Active(props) {
 
                         <TableLayout1
                             tableHeadValues={_tableHeadValues}
-                        >
+                        >    
+                        
+
                             {[...tableData].map((row) => (
                                 <Rendertablerow
                                     key={row.id}
@@ -182,6 +185,9 @@ export default function Active(props) {
                             ))}
                         </TableLayout1>
                     }
+                        {tableData?.length <= 0 && <div className='text-center w-full  pt-10'>
+                            No data to display!
+                        </div>}
                 </div>
             </div>
 

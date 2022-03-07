@@ -20,8 +20,12 @@ const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:1337/api/'
 //  User
 // ---------------------------------------
 
+export function userCount  () {
+    return  axios.get(`${BASE_URL}users/count`)
+}
+
 export function logIn  (payload) {
-    return  axios.post(`${BASE_URL}auth/local`, payload)
+    return  axios.post(`${BASE_URL}admin/user/login`, payload)
 }
 
 export function signUp  (payload) {
@@ -108,6 +112,10 @@ export function cancelOrders (id) {
 
 export function confirmOrderEmail (id) {
   return  axios.get(`${BASE_URL}admin/orders/mail/confirm/${id}`)
+}
+
+export function boxdeliveredEmail (id) {
+  return  axios.get(`${BASE_URL}admin/orders/mail/delivered/${id}`)
 }
 
 // ---------------------------------------

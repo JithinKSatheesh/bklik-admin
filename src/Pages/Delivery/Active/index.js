@@ -83,13 +83,16 @@ export default function Active(props) {
         confirmed: {
             filters: {
                 $and: [
-                    {
-                        deliveries: { delivery_date: { $gte: new Date(dateRange[0]) } }
+                    {deliveries : (dateRange[0] && dateRange[1]) ?  
+                        {
+                            is_delivered :{$eq : false},
+                            delivery_date: { $gte: new Date(dateRange[0]) },
+                            delivery_date: { $lte: new Date(dateRange[1]) }
+                        } : {
+                            is_delivered :{$eq : false},  
+                        }
                     },
-                    {
-                        deliveries: { delivery_date: { $lte: new Date(dateRange[1]) } }
-                    },
-                    { expiry_date: { $gte: new Date(new Date().setHours(0, 0, 0, 0)) } },
+                    // { expiry_date: { $gte: new Date(new Date().setHours(0, 0, 0, 0)) } },
                     { user: { email: { $notNull: true } } },
                     { is_delivery_confirmed: { $eq: true } },
                 ]
@@ -134,7 +137,9 @@ export default function Active(props) {
             }
             <div className="p-4">
                 <Alert severity="error">
-                    Active  means - All orders that is not expired!
+                    All orders that are confirmed but not yet delivered will appear here.
+                    <br />
+                    Order expired means - Delivery date is already passed, but box was not deliverd in time.
                     <br />
                     {'Only confirmed orders will appear here! ( To view unconfirmed order visit > orders > Waiting )'}
                 </Alert>

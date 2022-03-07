@@ -156,12 +156,12 @@ export default function Index(props) {
             labelText: "people",
             type: 'text'
         },
-        // {
-        //     name: "delivery_time",
-        //     labelText: "Delivery time",
-        //     type: 'text',
-        //     wrapperClass: ''
-        // },
+        {
+            name: "delivery_time",
+            labelText: "Delivery time",
+            type: 'text',
+            wrapperClass: ''
+        },
         {
             name: "delivery_day",
             labelText: "Delivery day",
@@ -469,7 +469,12 @@ export default function Index(props) {
                     
                    
                 </div>
-                <Alert severity='warning' className='my-3' icon={false}>
+                <Alert severity={inputVal?.blocked ?'error' : 'info'} className='my-3' icon={false}>
+                    {inputVal?.blocked &&
+                    <div className="text-bold text-lg">
+                        Deleted user
+                    </div>
+                    }
                     <Renderswitch
                         value={inputVal?.blocked}
                         handleChange={(e) => handleInputChange({ 'blocked': e.target.checked })}

@@ -14,7 +14,7 @@ import  LinearProgress from '@mui/material/LinearProgress';
 
 export default function Rendertablerow(props) {
 
-    const { tableRow, clickEvent } = props;
+    const { tableRow, clickEvent, index, page, dataLimit } = props;
     const [loading, setLoading] = useState(false);
 
     const handleClickEvent = async() => {
@@ -29,10 +29,13 @@ export default function Rendertablerow(props) {
             <TableRow onClick={handleClickEvent} hover sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 <TableCell   className="cursor-pointer w-2/5" align={'right'}>
                     <div className="flex items-center">
-                        <div className="pr-10 text-green-700"> <Icon>person</Icon> </div>
+                        <div className="pr-3">
+                            {(((page - 1) * dataLimit) + (index + 1))}
+                        </div>
+                        <div className="pr-6 text-green-700"> <Icon>person</Icon> </div>
                         <div>
                             <Typography color="inherit"  >
-                                {tableRow['username']}
+                                {tableRow['name']}
                             </Typography>
                         </div>
                     </div>
@@ -49,12 +52,24 @@ export default function Rendertablerow(props) {
                 </TableCell>
                 <TableCell  className="cursor-pointer w-2/5" align={'left'}>
                         
-                            {tableRow?.default_address?.phone}
+                    {tableRow?.default_address?.phone}
                         
                    
                 </TableCell>
                 <TableCell align="right" >
-                    
+                    {tableRow?.blocked ?
+                        <span className='text-red-500'> Deleted </span>
+                        :
+                        (
+                            tableRow?.order?.deliveries[tableRow?.order?.deliveries?.length - 1 || 0]
+                            &&
+                            tableRow?.order?.deliveries[tableRow?.order?.deliveries?.length - 1 || 0]?.is_delivered === false 
+                        )
+                            ?
+                            <span className='text-green-500'> Active&nbsp;Order </span>
+                            :
+                            <span className='text-amber-500'> No&nbsp;active&nbsp;order </span>
+                    }
                 </TableCell>
 
 

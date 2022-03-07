@@ -3,7 +3,8 @@ import React from 'react'
 // ** API
 import { 
         createAddress , editAddress, deleteAddress, 
-        updateUserProfile, updateOrders, updateDelivery
+        updateUserProfile, updateOrders, updateDelivery,
+        boxdeliveredEmail
     } from 'API/fetch'
 
 import {clean} from 'services/utils'
@@ -134,7 +135,7 @@ export default function Putdatahooks(props) {
             return false
         }
     }
-    const updateDeliveryData = async(id, payload) => {
+    const updateDeliveryData = async(id, payload, orderId) => {
 
         const {
             delivery_date,
@@ -151,13 +152,17 @@ export default function Putdatahooks(props) {
             const res = await updateDelivery(id, _payload)
             if (res?.data?.data) {
                 // initAddressData()
+                console.log("$$$$$___", res?.data?.data?.attributes?.is_delivered)
+                if (res?.data?.data?.attributes?.is_delivered) {
+                    await boxdeliveredEmail(orderId)
+                }
                 throwToast.success("Updated")
                 return res.data.data
             }
             return false
 
         } catch (ex) {
-            throwToast.error("Error")
+            throwToast.error("Error updating or sending email!.")
             return false
         }
     }
