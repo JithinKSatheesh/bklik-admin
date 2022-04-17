@@ -56,7 +56,7 @@ export default function Active(props) {
     const [dataLimit, setDataLimit] = useState(20)
     const [totalDataCount, setTotalDataCount] = useState(0)
 
-    const [page, setPage] = useState(0)
+    const [page, setPage] = useState(1)
     const pagnationCount = dataLimit > 0 ? Math.ceil(totalDataCount/dataLimit) : 1
     
     const handleChangePage = (event, value) => {

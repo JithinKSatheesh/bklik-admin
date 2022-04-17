@@ -90,6 +90,7 @@ export default function Index(props) {
     ]
 
     const initialOrderVal = {
+        recipe_per_week : '',
         weeks: '',
         people: '',
         delivery_time: '',
@@ -170,7 +171,7 @@ export default function Index(props) {
             const user_details = res?.data?.data?.user_details || {}
             
 
-            console.log(deliveries)
+            console.log(items)
 
             setInputVal(prev => ({
                 ...prev,
@@ -209,9 +210,9 @@ export default function Index(props) {
         setLoading(false)
     }
 
-    const updateDelivery = async () => {
+    const updateDelivery = async (allow_mail) => {
         setLoading(true)
-        const res = await updateDeliveryData(editCardId, inputDeliveryVal, val.id)
+        const res = await updateDeliveryData(editCardId, inputDeliveryVal, val.id, allow_mail)
         if (!res) {
             // setInputDeliveryVal(prev => ({
             //     ...prev,

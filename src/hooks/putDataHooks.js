@@ -135,7 +135,7 @@ export default function Putdatahooks(props) {
             return false
         }
     }
-    const updateDeliveryData = async(id, payload, orderId) => {
+    const updateDeliveryData = async(id, payload, orderId, allow_mail = false) => {
 
         const {
             delivery_date,
@@ -153,7 +153,7 @@ export default function Putdatahooks(props) {
             if (res?.data?.data) {
                 // initAddressData()
                 console.log("$$$$$___", res?.data?.data?.attributes?.is_delivered)
-                if (res?.data?.data?.attributes?.is_delivered) {
+                if (res?.data?.data?.attributes?.is_delivered && allow_mail) {
                     await boxdeliveredEmail(orderId)
                 }
                 throwToast.success("Updated")

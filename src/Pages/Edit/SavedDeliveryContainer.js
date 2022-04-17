@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import Alert from '@mui/material/Alert';
 
@@ -25,6 +25,8 @@ export const SavedDeliveryContainer = (props) => {
         loadingEdit ,
         _inputFieldsDelivery
     } = props;
+
+    const [allow_mail, setAllow_mail] = useState(false)
 
     // const {isAllowAddressEdit} = useStoreData()
     // const _isAllowAddressEdit = isAllowAddressEdit()
@@ -60,9 +62,15 @@ export const SavedDeliveryContainer = (props) => {
                                 value={deliveryEditInputVal.is_delivered}
                                 handleChange={(e) => handleEditDeliveryChange({'is_delivered' : e.target.checked})}
                                 />
+                            <Renderswitch 
+                                labelText="Send delivery mail notification."
+                                value={allow_mail}
+                                handleChange={() => setAllow_mail(!allow_mail)}
+                                />
+                            <br/>
                             Mark it "On" position if the box is delivered to user!. Also click "update data" after change.
                             <br/>
-                            This will also send an email to user.
+                            If mail notification is "on" this will send an email to user.
                         </Alert>
                     </div>
                     {/* <div className='py-4 w-full '>
@@ -77,7 +85,7 @@ export const SavedDeliveryContainer = (props) => {
                     </div> */}
                     <div className="w-full justify-between flex  py-2">
                         <SaveButton
-                            callback={EditDataFunc}
+                            callback={() => EditDataFunc(allow_mail)}
                             loading={loadingEdit}
                             // disabled={!_isAllowAddressEdit._edit}
                             className="mr-2 md:w-36 px-2 md:px-0"
